@@ -73,7 +73,7 @@ class AuthController extends Controller
     public function auth_login(Request $request){
         // dd($request->all());
         $remember = !empty($request->is_remember) ? true : false;
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 0, 'is_delete' => 0], $remember)){
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 0], $remember)){
             
             if (!empty(Auth::user()->email_verified_at)) {
                 $json['status'] = true;
@@ -81,7 +81,7 @@ class AuthController extends Controller
             }
             else {
                 $save = User::getSingle(Auth::user()->id);
-                Mail::to($save->email)->send(new RegisterMail($save));
+                #Mail::to($save->email)->send(new RegisterMail($save));
                 Auth::logout();
 
                 $json['status'] = false;
