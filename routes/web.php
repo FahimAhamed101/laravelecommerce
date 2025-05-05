@@ -2,17 +2,11 @@
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-//Route::get('/', function () {
-    ///return view('welcome');
-//});
-// ----- Admin -----
-Route::get('/', [HomeController::class, 'home']);
 
+Auth::routes();
 
-Route::get('admin', [AuthController::class, 'login_admin']);
-Route::post('admin', [AuthController::class, 'auth_login_admin']);
-Route::get('admin/logout', [AuthController::class, 'logout_admin']);
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+Auth::routes();
 
-// ----- User -----
-Route::post('auth_register', [AuthController::class, 'auth_register']);
-Route::post('auth_login', [AuthController::class, 'auth_login']);
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
