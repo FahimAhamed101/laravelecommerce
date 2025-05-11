@@ -233,27 +233,7 @@
                                             </div>
                                             <div
                                                 class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                                                @if (Cart::instance('cart')->content()->where('id', $sproduct->id)->count() > 0)
-                                                    <a href=""
-                                                        class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart text-danger ">Got
-                                                        To Cart</a>
-                                                @else
-                                                    <form name="addtocart-form" method="post"
-                                                        action="">
-                                                        @csrf
-                                                        <input type="hidden" name="id"
-                                                            value="{{ $sproduct->id }}" />
-                                                        <input type="hidden" name="quantity" value="1" />
-                                                        <input type="hidden" name="name"
-                                                            value="{{ $sproduct->name }}" />
-                                                        <input type="hidden" name="price"
-                                                            value="{{ $sproduct->sale_price == '' ? $sproduct->regular_price : $sproduct->sale_price }}" />
-                                                        <button type="submit"
-                                                            class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart "
-                                                            data-aside="cartDrawer" title="Add To Cart">Add To
-                                                            Cart</button>
-                                                    </form>
-                                                @endif
+                                              
 
                                                 <a href=""
                                                     class="btn-link btn-link_lg me-4 text-uppercase fw-medium">
