@@ -67,5 +67,7 @@ Route::post('/admin/slide/store', [AdminController::class, 'slide_store'])->name
 Route::get('/admin/slide/{id}/edit', [AdminController::class, 'slide_edit'])->name('admin.slide.edit');
 Route::put('/admin/slide/update', [AdminController::class, 'slide_update'])->name('admin.slide.update');
 Route::delete('/admin/slide/{id}/delete', [AdminController::class, 'slide_delete'])->name('admin.slide.delete');
- 
+Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
+Route::get('/admin/order/{order_id}/details', [AdminController::class, 'order_details'])->name('admin.order-details');
+Route::put('/admin/order/update_status', [AdminController::class, 'update_order_status'])->name('admin.order.status.update');
 });    
