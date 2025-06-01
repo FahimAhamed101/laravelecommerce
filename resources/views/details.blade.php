@@ -122,9 +122,59 @@
                     <div class="product-single__short-desc">
                         <p>{{ $product->short_description }}</p>
                     </div>
-               
+                    @if (Cart::instance('cart')->content()->where('id', $product->id)->count() > 0)
+                        <a href="{{ route('cart.index') }}" class="btn btn-warning mb-3">Got To Cart</a>
+                    @else
+                        <form name="addtocart-form" method="post" action="{{ route('cart.add') }}">
+                            @csrf
+                            <div class="product-single__addtocart">
+                                <div class="qty-control position-relative">
+                                    <input type="number" name="quantity" value="1" min="1"
+                                        class="qty-control__number text-center">
+                                    <div class="qty-control__reduce">-</div>
+                                    <div class="qty-control__increase">+</div>
+                                </div><!-- .qty-control -->
+                                <input type="hidden" name="id" value="{{ $product->id }}" />
+                                <input type="hidden" name="name" value="{{ $product->name }}" />
+                                <input type="hidden" name="price"
+                                    value="{{ $product->sale_price == '' ? $product->regular_price : $product->sale_price }}" />
+                                <button type="submit" class="btn btn-primary btn-addtocart" data-aside="cartDrawer">
+                                    Add to Cart</button>
+                            </div>
+                        </form>
+                    @endif
                     <div class="product-single__addtolinks">
-                 
+                        @if (Cart::instance('wishlist')->content()->where('id', $product->id)->count() > 0)
+                            <form
+                                action="{{ route('wishlist.item.remove', ['rowId' => Cart::instance('wishlist')->content()->where('id', $product->id)->first()->rowId]) }}"
+                                method="POST" id="frm-remove-item">
+                                @csrf
+                                @method('DELETE')
+                                <a href="javascript:void(0)" class="menu-link menu-link_us-s add-to-wishlist"
+                                    style="color: orange;"
+                                    onclick="document.getElementById('frm-remove-item').submit();"><svg width="16"
+                                        height="16" viewBox="0 0 20 20" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <use href="#icon_heart" />
+                                    </svg><span>Remove from Wishlist</span></a>
+                            </form>
+                        @else
+                            <form action="{{ route('wishlist.add') }}" method="POST" id="wishlist-from">
+                                @csrf
+                                @method('POST')
+                                <input type="hidden" name="id" value="{{ $product->id }}" />
+                                <input type="hidden" name="name" value="{{ $product->name }}" />
+                                <input type="hidden" name="price"
+                                    value="{{ $product->sale_price = '' ? $product->regular_price : $product->sale_price }}" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <a href="javascript:void(0)" class="menu-link menu-link_us-s add-to-wishlist"
+                                    onclick="document.getElementById('wishlist-from').submit();"><svg width="16"
+                                        height="16" viewBox="0 0 20 20" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <use href="#icon_heart" />
+                                    </svg><span>Add to Wishlist</span></a>
+                        @endif
+
                         <share-button class="share-button">
                             <button
                                 class="menu-link menu-link_us-s to-share border-0 bg-transparent d-flex align-items-center">
@@ -421,7 +471,11 @@
                                                 class="pc__img pc__img-second">
                                         @endforeach
                                     </a>
-                                  
+                                    @if (Cart::instance('cart')->content()->where('id', $rproduct->id)->count() > 0)
+                                        <a href="{{ route('cart.index') }}"
+                                            class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium btn btn-warning mb-3">Got
+                                            To Cart</a>
+                                    @else
                                         <form name="addtocart-form" method="post" action="{{ route('cart.add') }}">
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $rproduct->id }}" />
@@ -434,7 +488,7 @@
                                                 class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium"
                                                 data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
                                         </form>
-                                 
+                                    @endif
                                 </div>
 
                                 <div class="pc__info position-relative">
