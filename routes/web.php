@@ -4,11 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\AuthAdmin;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ShopController;
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
-Auth::routes();
+Route::get('/shop/{product_slug}', [ShopController::class, 'product_details'])->name('shop.product.details');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::middleware(['auth'])->group(function () {

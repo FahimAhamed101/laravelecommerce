@@ -204,8 +204,8 @@
                                     @foreach ($sproducts as $sproduct)
                                         <div class="swiper-slide product-card product-card_style3">
                                             <div class="pc__img-wrapper">
-                                                <a
-                                                    href="">
+                                            <a
+                                                    href="{{ route('shop.product.details', ['product_slug' => $sproduct->slug]) }}">
                                                     <img loading="lazy"
                                                         src="{{ asset('uploads/products/') }}/{{ $sproduct->image }}"
                                                         width="258" height="313" alt="{{ $sproduct->name }}"
