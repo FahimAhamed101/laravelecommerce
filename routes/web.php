@@ -70,4 +70,19 @@ Route::delete('/admin/slide/{id}/delete', [AdminController::class, 'slide_delete
 Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
 Route::get('/admin/order/{order_id}/details', [AdminController::class, 'order_details'])->name('admin.order-details');
 Route::put('/admin/order/update_status', [AdminController::class, 'update_order_status'])->name('admin.order.status.update');
+
+//COUPON
+Route::get('/admin/coupons', [AdminController::class, 'coupons'])->name('admin.coupons');
+Route::get('/admin/coupon/add', [AdminController::class, 'coupon_add'])->name('admin.coupon.add');
+Route::any('/admin/coupon/store', [AdminController::class, 'coupons_store'])->name('admin.coupon.store');
+Route::get('/admin/coupon/{id}/edit', [AdminController::class, 'coupon_edit'])->name('admin.coupon.edit');
+Route::put('/admin/coupon/update', [AdminController::class, 'coupon_update'])->name('admin.coupon.update');
+Route::delete('/admin/coupon/{id}/delete', [AdminController::class, 'coupon_delete'])->name('admin.coupon.delete');
+Route::get('/admin/search', [AdminController::class, 'search'])->name('admin.search');
+ //CONTACT
+ Route::get('/admin/contacts', [AdminController::class, 'contacts'])->name('admin.contacts');
+ Route::delete('/admin/contact/{id}/delete', [AdminController::class, 'contact_delete'])->name('admin.contact.delete');
+
+ Route::get('/admin/user', [AdminController::class, 'user_All'])->name('admin.user');
+ Route::delete('/admin/user/{id}/delete', [AdminController::class, 'user_delete'])->name('admin.user.delete');
 });    

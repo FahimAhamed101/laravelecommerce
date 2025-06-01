@@ -131,14 +131,12 @@
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
-                                        <li class="sub-menu-item">
                                             <a href="{{ route('admin.product.add') }}" class="">
                                                 <div class="text">Add Product</div>
                                             </a>
                                         </li>
-                                        </li>
                                         <li class="sub-menu-item">
-                                        <a href="{{ route('admin.products') }}" class="">
+                                            <a href="{{ route('admin.products') }}" class="">
                                                 <div class="text">Products</div>
                                             </a>
                                         </li>
@@ -206,14 +204,14 @@
                                     </a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="" class="">
+                                    <a href="{{ route('admin.coupons') }}" class="">
                                         <div class="icon"><i class="icon-grid"></i></div>
                                         <div class="text">Coupons</div>
                                     </a>
                                 </li>
 
                                 <li class="menu-item">
-                                    <a href="" class="">
+                                    <a href="{{ route('admin.contacts') }}" class="">
                                         <div class="icon"><i class="icon-mail"></i></div>
                                         <div class="text">Messages</div>
                                     </a>
@@ -221,7 +219,7 @@
 
 
                                 <li class="menu-item">
-                                    <a href="" class="">
+                                    <a href="{{ route('admin.user') }}" class="">
                                         <div class="icon"><i class="icon-user"></i></div>
                                         <div class="text">User</div>
                                     </a>
@@ -253,7 +251,7 @@
                     <div class="header-dashboard">
                         <div class="wrap">
                             <div class="header-left">
-                                <a href="">
+                                <a href="{{ route('admin.index') }}">
                                     <img class="" id="logo_header_mobile" alt=""
                                         src="{{ asset('images/logo/logo.png') }}"
                                         data-light="{{ asset('images/logo/logo.png') }}"
@@ -446,7 +444,7 @@
                 if (searchQuery.length > 2) {
                     $.ajax({
                         type: "GET",
-                        url: "",
+                        url: "{{ route('admin.search') }}",
                         data: {
                             query: searchQuery
                         },
@@ -460,7 +458,7 @@
                             }
                             $.each(data, function(index, item) {
                                 var url =
-                                    "";
+                                    "{{ route('admin.product.edit', ['id' => 'product_id']) }}";
                                 var link = url.replace('product_id', item.id);
                                 $("#box-content-search").append(`
     <li class="product-item gap14 mb-10">
