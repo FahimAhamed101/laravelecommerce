@@ -37,7 +37,7 @@ class CartController extends Controller
 
     public function add_to_cart(Request $request)
     {
-        // $productuu=new Product();
+        // $productuu=new Product();{{ number_format($order->subtotal, 2) }} for display
         Cart::instance('cart')->add($request->id, $request->name, $request->quantity, $request->price)->associate((string) "App\Models\Product");
         return redirect()->back();
     }
@@ -77,57 +77,55 @@ class CartController extends Controller
     {
         $coupon_code = $request->coupon_code;
         if (isset($coupon_code)) {
-            $coupon = Coupon::
-                where('code', $coupon_code)
-                ->where('expiry_date', '<=', Carbon::today())
-                ->where('cart_value', '<=', Cart::instance('cart')->subtotal())
+            // Fix the expiry date comparison (should be >= today)
+            $coupon = Coupon::where('code', $coupon_code)
+                ->where('expiry_date', '>=', Carbon::today()) // Changed from <= to >=
+                ->where('cart_value', '<=', (float)str_replace(',', '', Cart::instance('cart')->subtotal()))
                 ->first();
-
-
-
-
+    
             if (!$coupon) {
                 return redirect()->back()->with('error', 'Invalid coupon code!');
-            } else {
-
-                Session::put('coupon', [
-                    'code' => $coupon->code,
-                    'type' => $coupon->type,
-                    'value' => $coupon->value,
-                    'cart_value' => $coupon->cart_value
-                ]);
-                $this->calculateDiscount();
-                return redirect()->back()->with('success', 'Coupon has been applied!');
             }
-
-        } else {
-
-            return redirect()->back()->with('error', 'Invalid coupon code!');
+    
+            Session::put('coupon', [
+                'code' => $coupon->code,
+                'type' => $coupon->type,
+                'value' => $coupon->value,
+                'cart_value' => $coupon->cart_value
+            ]);
+            
+            $this->calculateDiscount();
+            return redirect()->back()->with('success', 'Coupon has been applied!');
         }
-
+    
+        return redirect()->back()->with('error', 'Invalid coupon code!');
     }
     public function calculateDiscount()
     {
         $discount = 0;
         if (Session::has('coupon')) {
+            // Get raw subtotal without formatting
+            $rawSubtotal = (float)str_replace(',', '', Cart::instance('cart')->subtotal());
+            
             if (Session::get('coupon')['type'] == 'fixed') {
-                $discount = Session::get('coupon')['value'];
+                $discount = (float)Session::get('coupon')['value'];
             } else {
-                $discount = (Cart::instance('cart')->subtotal() * Session::get('coupon')['value']) / 100;
+                $discount = ($rawSubtotal * (float)Session::get('coupon')['value']) / 100;
             }
-            $subtotalAfterDiscount = Cart::instance('cart')->subtotal() - $discount;
+            
+            $subtotalAfterDiscount = $rawSubtotal - $discount;
             $taxAfterDiscount = ($subtotalAfterDiscount * config('cart.tax')) / 100;
             $totalAfterDiscount = $subtotalAfterDiscount + $taxAfterDiscount;
-
+    
+            // Store raw numbers without formatting
             Session::put('discounts', [
-                'discount' => number_format(floatval($discount), '2', '.', ''),
-                'subtotal' => number_format(floatval($subtotalAfterDiscount), '2', '.', ''),
-                'tax' => number_format(floatval($taxAfterDiscount), '2', '.', ''),
-                'total' => number_format(floatval($totalAfterDiscount), '2', '.', ''),
+                'discount' => $discount,
+                'subtotal' => $subtotalAfterDiscount,
+                'tax' => $taxAfterDiscount,
+                'total' => $totalAfterDiscount,
             ]);
         }
     }
-
     public function remove_coupon_code()
     {
         Session::forget('coupon');
@@ -245,6 +243,7 @@ class CartController extends Controller
             Session::forget('checkout');
             return;
         }
+        
         if (Session::has('coupon')) {
             Session::put('checkout', [
                 'discount' => Session::get('discounts')['discount'],
@@ -253,13 +252,17 @@ class CartController extends Controller
                 'total' => Session::get('discounts')['total'],
             ]);
         } else {
+            // Get raw values without formatting
+            $subtotal = (float)str_replace(',', '', Cart::instance('cart')->subtotal());
+            $tax = (float)str_replace(',', '', Cart::instance('cart')->tax());
+            $total = (float)str_replace(',', '', Cart::instance('cart')->total());
+            
             Session::put('checkout', [
                 'discount' => 0,
-                'subtotal' => Cart::instance('cart')->subtotal(),
-                'tax' => Cart::instance('cart')->tax(),
-                'total' => Cart::instance('cart')->total(),
+                'subtotal' => $subtotal,
+                'tax' => $tax,
+                'total' => $total,
             ]);
-
         }
     }
 

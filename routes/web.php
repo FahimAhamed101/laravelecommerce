@@ -1,5 +1,5 @@
 <?php
-use App\Http\Controllers\AuthController;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\AuthAdmin;
@@ -8,8 +8,11 @@ use App\Http\Controllers\ShopController;
 use Surfsidemedia\Shoppingcart\Facades\Cart;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 Auth::routes();
 
+//SHOP
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/shop/{product_slug}', [ShopController::class, 'product_details'])->name('shop.product.details');
@@ -31,12 +34,14 @@ Route::post('/wishlist/move-to-cart/{rowId}', [WishlistController::class, 'move_
 Route::get('/wishlist/count', function () {
     return response()->json(['count' => Cart::instance('wishlist')->count()]);
 });
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::middleware(['auth'])->group(function () {
-    Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
-   
+//CHECKOUT
+Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::post('/place_an_order', [CartController::class, 'place_on_order'])->name('cart.place.on.order');
+Route::get('/order_confirmation', [CartController::class, 'order_confirmation'])->name('cart.order.confirmation');
+Route::get('/test-coupon', function() {
+    return session()->all();
 });
+
 Route::get('/contact-us', [HomeController::class, 'contact'])->name('home.contact');
 Route::post('/contact-store', [HomeController::class, 'contact_store'])->name('home.contact.store');
 Route::get('/search', [HomeController::class, 'search'])->name('home.search');
@@ -44,6 +49,15 @@ Route::get('/about', [HomeController::class, 'about'])->name('home.about');
 Route::get('/search', [HomeController::class, 'search'])->name('home.search');
 
 
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
+    Route::get('/account-orders', [UserController::class, 'orders'])->name('user.orders');
+    Route::get('/account-orders/{order_id}/details', [UserController::class, 'order_details'])->name('user.order-details');
+    Route::put('/account-order/cancel-order', [UserController::class, 'order_canceled'])->name('user.order.canceled');
+    Route::get('/account-wishlist', [UserController::class, 'wishlist'])->name('user.wishlist');
+
+});
 
 
 Route::middleware(['auth', AuthAdmin::class])->group(function () {

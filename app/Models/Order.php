@@ -8,7 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
-    protected $fillable = [
+    protected $casts = [
+        'subtotal' => 'float',
+        'discount' => 'float',
+        'tax' => 'float',
+        'total' => 'float',
+    ];
+    protected $fillable = 
+    [
         'user_id',
         'subtotal',
         'dsicount',
