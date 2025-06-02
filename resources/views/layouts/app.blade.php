@@ -333,7 +333,7 @@
             </a>
 
             <div class="logo">
-                <a href="">
+                <a href="{{ route('home.index') }}">
                     <img src="{{ asset('assets/images/logo.png') }}" alt="Uomo" class="logo__image d-block" />
                 </a>
             </div>
@@ -373,19 +373,19 @@
                 <div class="overflow-hidden">
                     <ul class="navigation__list list-unstyled position-relative">
                         <li class="navigation__item">
-                            <a href="" class="navigation__link">Home</a>
+                            <a href="{{ route('home.index') }}" class="navigation__link">Home</a>
                         </li>
                         <li class="navigation__item">
-                            <a href="" class="navigation__link">Shop</a>
+                            <a href="{{ route('shop.index') }}" class="navigation__link">Shop</a>
                         </li>
                         <li class="navigation__item">
-                            <a href="" class="navigation__link">Cart</a>
+                            <a href="{{ route('cart.index') }}" class="navigation__link">Cart</a>
                         </li>
                         <li class="navigation__item">
-                            <a href="" class="navigation__link">About</a>
+                            <a href="{{ route('home.about') }}" class="navigation__link">About</a>
                         </li>
                         <li class="navigation__item">
-                            <a href="" class="navigation__link">Contact</a>
+                            <a href="{{ route('home.contact') }}l" class="navigation__link">Contact</a>
                         </li>
                     </ul>
                 </div>
@@ -454,7 +454,7 @@
         <div class="container">
             <div class="header-desk header-desk_type_1">
                 <div class="logo">
-                    <a href="">
+                    <a href="{{ route('home.index') }}">
                         <img src="{{ asset('assets/images/logo.png') }}" alt="Uomo"
                             class="logo__image d-block" />
                     </a>
@@ -463,19 +463,19 @@
                 <nav class="navigation">
                     <ul class="navigation__list list-unstyled d-flex">
                         <li class="navigation__item">
-                            <a href="" class="navigation__link">Home</a>
+                            <a href="{{ route('home.index') }}" class="navigation__link">Home</a>
                         </li>
                         <li class="navigation__item">
-                            <a href="" class="navigation__link">Shop</a>
+                            <a href="{{ route('shop.index') }}" class="navigation__link">Shop</a>
                         </li>
                         <li class="navigation__item">
-                            <a href="" class="navigation__link">Cart</a>
+                            <a href="{{ route('cart.index') }}" class="navigation__link">Cart</a>
                         </li>
                         <li class="navigation__item">
-                            <a href="" class="navigation__link">About</a>
+                            <a href="{{ route('home.about') }}" class="navigation__link">About</a>
                         </li>
                         <li class="navigation__item">
-                            <a href="" class="navigation__link">Contact</a>
+                            <a href="{{ route('home.contact') }}" class="navigation__link">Contact</a>
                         </li>
                     </ul>
                 </nav>
@@ -493,7 +493,7 @@
                         </div>
 
                         <div class="search-popup js-hidden-content">
-                            <form action="" method="GET" class="search-field container">
+                            <form action="{{ route('home.search') }}" method="GET" class="search-field container">
                                 <p class="text-uppercase text-secondary fw-medium mb-4">What are you looking for?</p>
                                 <div class="position-relative">
                                     <input class="search-field__input search-popup__input w-100 fw-medium"
@@ -540,20 +540,26 @@
                         </div>
                     @endguest
 
-                    <a href="" class="header-tools__item header-tools__cart">
+                    <a href="{{ route('wishlist.index') }}" class="header-tools__item header-tools__cart">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <use href="#icon_heart" />
                         </svg>
-                     
+                        @if (Cart::instance('wishlist')->content()->count() > 0)
+                            <span
+                                class="cart-amount d-block position-absolute js-cart-items-count">{{ Cart::instance('wishlist')->content()->count() }}</span>
+                        @endif
                     </a>
 
-                    <a href="" class="header-tools__item header-tools__cart">
+                    <a href="{{ route('cart.index') }}" class="header-tools__item header-tools__cart">
                         <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <use href="#icon_cart" />
                         </svg>
-                     
+                        @if (Cart::instance('cart')->content()->count() > 0)
+                            <span
+                                class="cart-amount d-block position-absolute js-cart-items-count">{{ Cart::instance('cart')->content()->count() }}</span>
+                        @endif
                     </a>
                 </div>
             </div>
@@ -570,7 +576,7 @@
             <div class="row row-cols-lg-5 row-cols-2">
                 <div class="footer-column footer-store-info col-12 mb-4 mb-lg-0">
                     <div class="logo">
-                        <a href="">
+                        <a href="{{ route('home.index') }}">
                             <img src="{{ asset('assets/images/logo.png') }}" alt="SurfsideMedia"
                                 class="logo__image d-block" />
                         </a>
@@ -627,7 +633,7 @@
                 <div class="footer-column footer-menu mb-4 mb-lg-0">
                     <h6 class="sub-menu__title text-uppercase">Company</h6>
                     <ul class="sub-menu__list list-unstyled">
-                        <li class="sub-menu__item"><a href=""
+                        <li class="sub-menu__item"><a href="{{ route('home.about') }}"
                                 class="menu-link menu-link_us-s">About Us</a></li>
                         <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Careers</a>
                         </li>
@@ -703,7 +709,7 @@
     <footer class="footer-mobile container w-100 px-5 d-md-none bg-body">
         <div class="row text-center">
             <div class="col-4">
-                <a href=""
+                <a href="{{ route('home.index') }}"
                     class="footer-mobile__link d-flex flex-column align-items-center">
                     <svg class="d-block" width="18" height="18" viewBox="0 0 18 18" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -714,7 +720,7 @@
             </div>
 
             <div class="col-4">
-                <a href=""
+                <a href="{{ route('home.index') }}"
                     class="footer-mobile__link d-flex flex-column align-items-center">
                     <svg class="d-block" width="18" height="18" viewBox="0 0 18 18" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -725,7 +731,7 @@
             </div>
 
             <div class="col-4">
-                <a href=""
+                <a href="{{ route('home.index') }}"
                     class="footer-mobile__link d-flex flex-column align-items-center">
                     <div class="position-relative">
                         <svg class="d-block" width="18" height="18" viewBox="0 0 20 20" fill="none"
@@ -757,7 +763,7 @@
                 if (searchQuery.length > 2) {
                     $.ajax({
                         type: "GET",
-                        url: "",
+                        url: "{{ route('home.search') }}",
                         data: {
                             query: searchQuery
                         },
@@ -771,7 +777,7 @@
                             }
                             $.each(data, function(index, item) {
                                 var url =
-                                    "";
+                                    "{{ route('shop.product.details', ['product_slug' => 'product_slug_pls']) }}";
                                 var link = url.replace('product_slug_pls', item.slug);
                                 $("#box-content-search").append(`
     <li class="product-item gap14 mb-10">

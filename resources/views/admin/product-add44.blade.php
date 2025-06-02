@@ -28,10 +28,8 @@
                 </ul>
             </div>
             <!-- form-add-product -->
-            <form class="tf-section-2 form-add-product" action="{{ route('admin.product.store') }}" method="POST"
-                enctype="multipart/form-data">
-                {{-- <form class="form-new-product form-style-1" action="{{ route('admin.product.store') }}" method="POST"
-                    enctype="multipart/form-data"> --}}
+            <form class="tf-section-2 form-add-product" method="POST" enctype="multipart/form-data"
+                action="{{ route('admin.product.store') }}">
                 @csrf
                 <div class="wg-box">
                     <fieldset class="name">
@@ -56,6 +54,14 @@
                     @error('slug')
                         <span class="alert alert-danger text-center">{{ $message }}</span>
                     @enderror
+                    <fieldset class="name">
+                        <div class="body-title">Category Slug <span class="tf-color-1">*</span></div>
+                        <input class="flex-grow" type="text" placeholder="Category Slug" name="slug" tabindex="0"
+                            value="{{ old('slug') }}" aria-required="true" required="">
+                    </fieldset>
+                    @error('slug')
+                        <span class="alert alert-danger text-center">{{ $message }}</span>
+                    @enderror
 
                     <div class="gap22 cols">
                         <fieldset class="category">
@@ -70,16 +76,16 @@
                                 </select>
                             </div>
                         </fieldset>
-                        @error('brand_id')
+                        @error('category_id')
                             <span class="alert alert-danger text-center">{{ $message }}</span>
                         @enderror
 
                         <fieldset class="brand">
-                            <div class="body-title mb-10">brand <span class="tf-color-1">*</span>
+                            <div class="body-title mb-10">Brand <span class="tf-color-1">*</span>
                             </div>
                             <div class="select">
                                 <select class="" name="brand_id">
-                                    <option>Choose brand</option>
+                                    <option>Choose Brand</option>
                                     @foreach ($brands as $brand)
                                         <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                     @endforeach
@@ -89,22 +95,6 @@
                         @error('brand_id')
                             <span class="alert alert-danger text-center">{{ $message }}</span>
                         @enderror
-
-                        {{-- <fieldset class="brand">
-                                <div class="body-title mb-10">Brand <span class="tf-color-1">*</span>
-                                </div>
-                                <div class="select">
-                                    <select class="" name="brand_id">
-                                        <option>Choose Brand</option>
-                                        @foreach ($brands as $brand)
-                                            <option value="{{ $brand->id }}">{{ $brand->slug }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </fieldset>
-                            @error('brand_id')
-                                <span class="alert alert-danger text-center">{{ $message }}</span>
-                            @enderror --}}
                     </div>
 
                     <fieldset class="shortdescription">
@@ -117,15 +107,6 @@
                     @error('short_description')
                         <span class="alert alert-danger text-center">{{ $message }}</span>
                     @enderror
-                    @if ($errors->has('short_description'))
-                    <script>
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: '{{ $errors->first('short_description') }}',
-                        });
-                    </script>
-                @endif
 
 
                     <fieldset class="description">
@@ -140,22 +121,23 @@
                         <span class="alert alert-danger text-center">{{ $message }}</span>
                     @enderror
                 </div>
+
                 <div class="wg-box">
                     <fieldset>
                         <div class="body-title">Upload images <span class="tf-color-1">*</span>
                         </div>
                         <div class="upload-image flex-grow">
                             <div class="item" id="imgpreview" style="display:none">
-                                <img src="../../../localhost_8000/images/upload/upload-1.png" id="imgpreview"
-                                    class="effect8" alt="">
+                                <img src="../../../localhost_8000/images/upload/upload-1.png" class="effect8"
+                                    alt="">
                             </div>
                             <div id="upload-file" class="item up-load">
                                 <label class="uploadfile" for="myFile">
                                     <span class="icon">
                                         <i class="icon-upload-cloud"></i>
                                     </span>
-                                    <span class="body-text">Drop your images here or select <span class="tf-color">click
-                                            to browse</span></span>
+                                    <span class="body-text">Drop your images here or select <span class="tf-color">click to
+                                            browse</span></span>
                                     <input type="file" id="myFile" name="image" accept="image/*">
                                 </label>
                             </div>
@@ -168,9 +150,9 @@
                     <fieldset>
                         <div class="body-title mb-10">Upload Gallery Images</div>
                         <div class="upload-image mb-16">
-                            {{-- <div class="item" id="imgpreview" style="display:none">
-                                <img src="images/upload/upload-1.png"    id="imgpreview" class="effect8" alt="">
-                            </div> --}}
+                            <!-- <div class="item">
+                <img src="images/upload/upload-1.png" alt="">
+            </div>                                                 -->
                             <div id="galUpload" class="item up-load">
                                 <label class="uploadfile" for="gFile">
                                     <span class="icon">
@@ -206,6 +188,7 @@
                         @error('sale_price')
                             <span class="alert alert-danger text-center">{{ $message }}</span>
                         @enderror
+
                     </div>
 
 
@@ -223,10 +206,10 @@
                         <fieldset class="name">
                             <div class="body-title mb-10">Quantity <span class="tf-color-1">*</span>
                             </div>
-                            <input class="mb-10" type="text" placeholder="Enter quntity" name="quntity"
-                                tabindex="0" value="{{ old('quntity') }}" aria-required="true" required="">
+                            <input class="mb-10" type="text" placeholder="Enter quantity" name="quantity"
+                                tabindex="0" value="{{ old('quantity') }}" aria-required="true" required="">
                         </fieldset>
-                        @error('quntity')
+                        @error('quantity')
                             <span class="alert alert-danger text-center">{{ $message }}</span>
                         @enderror
 
@@ -245,6 +228,7 @@
                         @error('stock_status')
                             <span class="alert alert-danger text-center">{{ $message }}</span>
                         @enderror
+
                         <fieldset class="name">
                             <div class="body-title mb-10">Featured</div>
                             <div class="select mb-10">
@@ -257,6 +241,7 @@
                         @error('featured')
                             <span class="alert alert-danger text-center">{{ $message }}</span>
                         @enderror
+
                     </div>
                     <div class="cols gap10">
                         <button class="tf-button w-full" type="submit">Add product</button>
@@ -277,8 +262,8 @@
                 const [file] = this.files;
                 if (file) {
                     $("#imgpreview img").attr('src', URL.createObjectURL(file));
-                    $("#imgpreview").show();
-
+                    /*    $("#imgpreview").show();
+                     */
                 }
             });
 
@@ -286,10 +271,12 @@
                 const photoInp = $("#gFile");
                 const gphotos = this.files;
                 $.each(gphotos, function(key, val) {
-                    $("#galUpload").prepend('<div class="item gitems"><img src="' + URL
-                        .createObjectURL(val) + '"/></div>');
+                    $("#galUpload img").prepend('<div class="item gitems"><img src='
+                        $(URL.createObjectURL(val))
+                        '/></div>');
                 });
             });
+
             $("input[name='name']").on("change", function() {
                 $("input[name='slug']").val(StringToSlug($(this).val()));
             })

@@ -104,7 +104,7 @@
                                         src="{{ asset('uploads/categories') }}/{{ $category->image }}" width="124"
                                         height="124" alt="{{ $category->name }}" />
                                     <div class="text-center">
-                                        <a href=""
+                                        <a href="{{ route('shop.index', ['categories' => $category->id]) }}"
                                             class="menu-link fw-medium">{{ $category->name }}</a>
                                     </div>
                                 </div>
@@ -161,7 +161,7 @@
                             </div>
                         </div>
 
-                        <a href=""
+                        <a href="{{ route('shop.index') }}"
                             class="btn-link default-underline text-uppercase fw-medium mt-3">View All</a>
                     </div>
                     <div class="col-md-6 col-lg-8 col-xl-80per">
@@ -204,7 +204,7 @@
                                     @foreach ($sproducts as $sproduct)
                                         <div class="swiper-slide product-card product-card_style3">
                                             <div class="pc__img-wrapper">
-                                            <a
+                                                <a
                                                     href="{{ route('shop.product.details', ['product_slug' => $sproduct->slug]) }}">
                                                     <img loading="lazy"
                                                         src="{{ asset('uploads/products/') }}/{{ $sproduct->image }}"
@@ -216,7 +216,7 @@
 
                                             <div class="pc__info position-relative">
                                                 <h6 class="pc__title"><a
-                                                        href="">Cropped
+                                                        href="{{ route('shop.product.details', ['product_slug' => $sproduct->slug]) }}">Cropped
                                                         Faux Leather Jacket</a></h6>
                                                 <div class="product-card__price d-flex">
                                                     <span class="money price text-secondary">$
@@ -233,9 +233,29 @@
                                             </div>
                                             <div
                                                 class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                                              
+                                                @if (Cart::instance('cart')->content()->where('id', $sproduct->id)->count() > 0)
+                                                    <a href="{{ route('cart.index') }}"
+                                                        class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart text-danger ">Got
+                                                        To Cart</a>
+                                                @else
+                                                    <form name="addtocart-form" method="post"
+                                                        action="{{ route('cart.add') }}">
+                                                        @csrf
+                                                        <input type="hidden" name="id"
+                                                            value="{{ $sproduct->id }}" />
+                                                        <input type="hidden" name="quantity" value="1" />
+                                                        <input type="hidden" name="name"
+                                                            value="{{ $sproduct->name }}" />
+                                                        <input type="hidden" name="price"
+                                                            value="{{ $sproduct->sale_price == '' ? $sproduct->regular_price : $sproduct->sale_price }}" />
+                                                        <button type="submit"
+                                                            class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart "
+                                                            data-aside="cartDrawer" title="Add To Cart">Add To
+                                                            Cart</button>
+                                                    </form>
+                                                @endif
 
-                                                <a href=""
+                                                <a href="{{ route('shop.product.details', ['product_slug' => $sproduct->slug]) }}"
                                                     class="btn-link btn-link_lg me-4 text-uppercase fw-medium">
                                                     <span class="d-none d-xxl-block">Quick View</span>
                                                     <span class="d-block d-xxl-none">
@@ -274,7 +294,7 @@
 
                                     <div class="category-banner__item-content">
                                         <h3 class="mb-0">{{ $category->name }}</h3>
-                                        <a href=""
+                                        <a href="{{ route('shop.index', ['categories' => $category->id]) }}"
                                             class="btn-link default-underline text-uppercase fw-medium">
                                             Shop Now
                                         </a>
@@ -297,7 +317,7 @@
                         <div class="col-6 col-md-4 col-lg-3">
                             <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
                                 <div class="pc__img-wrapper">
-                                    <a href="">
+                                    <a href="{{ route('shop.product.details', ['product_slug' => $fproduct->slug]) }}">
                                         <img loading="lazy"
                                             src="{{ asset('uploads/products/') }}/{{ $fproduct->image }}" width="330"
                                             height="400" alt="{{ $fproduct->name }}" class="pc__img">
@@ -306,7 +326,7 @@
 
                                 <div class="pc__info position-relative">
                                     <h6 class="pc__title"><a
-                                            href="">{{ $fproduct->name }}</a>
+                                            href="{{ route('shop.product.details', ['product_slug' => $fproduct->slug]) }}">{{ $fproduct->name }}</a>
                                     </h6>
                                     <div class="product-card__price d-flex align-items-center">
                                         <span class="money price text-secondary">$
@@ -327,7 +347,7 @@
 
                 <div class="text-center mt-2">
                     <a class="btn-link btn-link_lg default-underline text-uppercase fw-medium"
-                        href="">Load
+                        href="{{ route('shop.index') }}">Load
                         More</a>
                 </div>
             </section>
